@@ -1,0 +1,700 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>DM Check Results</title>
+    <style>
+      * {
+        transition: all 0.15s;
+      }
+
+      body {
+        color: #4A4A4A;
+        font-family: "Helvetica Neue", Helvetica, sans-serif;
+        font-size: 12px;
+        margin: 40px;
+      }
+
+      header {
+        margin: 20px 0;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-align-items: center;
+        align-items: center;
+        justify-content: space-between;
+        -webkit-justify-content: space-between;
+      }
+
+      h1 {
+        font-size: 28px;
+        font-weight: 300;
+        margin: 0;
+      }
+
+      h1:before {
+        padding-right: 10px;
+        content: "";
+      }
+
+      .fine-print {
+        font-family: HelveticaNeue-Bold;
+        font-size: 10px;
+        color: #AAAAAA;
+        line-height: 12px;
+        display: block;
+      }
+
+      .table-title {
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 24px;
+        margin-bottom: 0;
+      }
+
+      .table-description {
+        font-size: 14px;
+        margin-top: 0;
+      }
+
+      .criteria {
+        text-align: right;
+        align-self: flex-start;
+        -webkit-align-self: flex-end;
+        align-self: flex-end;
+      }
+
+      .criteria-text {
+        font-size: 12px;
+        border: 1px solid #D0D0D0;
+        border-radius: 3px;
+        margin-bottom: 10px;
+        padding: 8px 5px;
+        width: 220px;
+        -webkit-appearance: none;
+      }
+
+      .criteria-state {
+        font-weight: bold;
+      }
+
+      .criteria-state label {
+        font-weight: normal;
+        line-height: 10px;
+        margin-left: 5px;
+      }
+
+      .criteria-state input {
+        margin-right: 5px;
+      }
+
+      table {
+        width: 100%;
+        border: 1px solid #D0D0D0 ;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      thead {
+        border-radius: 10px 10px 0 0;
+        overflow: hidden;
+      }
+
+      th, td {
+        border-right: 1px solid #D0D0D0;
+      }
+
+      th:last-of-type, td:last-of-type {
+        border-right: 0;
+      }
+
+      th {
+        font-weight: 600;
+        line-height: 36px;
+        text-align: left;
+        background-color: #E6E6E6;
+        padding: 0 30px 0 10px;
+        cursor: pointer;
+        overflow: hidden;
+        position: relative;
+        -webkit-user-select: none;
+                user-select: none;
+      }
+
+      th:after {
+        font-size: 12px;
+        line-height: 40px;
+        position: absolute;
+        right: 10px;
+        content: "⬍";
+      }
+
+      th.ascending:after {
+        content: "↑";
+      }
+
+      th.descending:after {
+        content: "↓";
+      }
+
+      td {
+        border-top: 1px solid #D0D0D0;
+        padding: 10px;
+        vertical-align: top;
+      }
+
+      tbody tr:nth-child(even) {
+        background-color: #F8F8F8;
+      }
+
+      tbody tr:hover {
+        background-color: #EEE;
+      }
+
+      tbody td.warning {
+        background-color: #FFEDD1;
+        font-weight: bold;
+      }
+
+      tbody td.failure {
+        color: #D0021B;
+        font-weight: bold;
+        background-color: #FFD1D1;
+      }
+
+      tbody td.skipped {
+        color: rgba(74,74,74,0.50);
+      }
+
+      tbody img {
+        background-color: #CCC;
+      }
+
+      tbody ul {
+        padding-left: 20px;
+      }
+
+      .terminal-output {
+        background-color: #F8F8F8;
+        border: 1px solid #D0D0D0;
+        border-radius: 8px;
+        padding: 10px 15px;
+        margin-top: 20px;
+        word-wrap: break-word;
+      }
+
+      .terminal-output h2 {
+        font-size: 14px;
+        margin-top: 0;
+      }
+
+      .terminal-output a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .terminal-output a:before {
+        font-size: 10px;
+        content: "➤";
+        margin-right: 5px;
+        display: inline-block;
+      }
+
+      .terminal-output.active a:before {
+        -webkit-transform: rotate(90deg);
+      }
+
+      .terminal-output pre {
+        display: none;
+      }
+
+      .terminal-output.active pre {
+        display: block;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .underline {
+          border-bottom: 1px solid #D0D0D0;
+      }
+
+      @media print {
+        .text,
+        th:after {
+          display: none;
+        }
+      }
+
+    </style>
+  </head>
+  <body>
+    <section class="wrapper">
+      <header>
+        <div class="heading">
+          <h1>DM Check Results</h1>
+          <time class="report-timestamp fine-print">Wed Jun 17 2020 15:18:21 GMT-0700 (Pacific Daylight Time)</time>
+        </div>
+        <div class="criteria">
+          <input type="search" class="criteria-text" placeholder="Filter" autofocus>
+          <div class="criteria-state">
+            Show:
+              <label><input name="criteria" type="radio" value="failure">Failures</label>
+              <label><input name="criteria" type="radio" value="all">All Results</label>
+          </div>
+        </div>
+      </header>
+
+          <h2 class="table-title">Omniture Check</h2>
+        <table cellpadding="0" cellspacing="0">
+          <thead>
+            <tr>
+                <th>Name</th>
+                <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr >
+                <td>Broadcast ID</td>
+                <td>2024021</td>
+              </tr>
+              <tr >
+                <td>Broadcast Name</td>
+                <td>BTS 2020 AACS</td>
+              </tr>
+              <tr >
+                <td>omnitureClickmapEnabled</td>
+                <td>false</td>
+              </tr>
+              <tr >
+                <td>omnitureCampaign</td>
+                <td>BTS 2020 June Grads</td>
+              </tr>
+              <tr >
+                <td>omnitureCampaignFamily</td>
+                <td>BTS 2020</td>
+              </tr>
+          </tbody>
+        </table>
+          <h2 class="table-title">Multiple Alt Check</h2>
+        <table cellpadding="0" cellspacing="0">
+          <thead>
+            <tr>
+                <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr >
+                <td>No multiple alts were detected--Pass</td>
+              </tr>
+          </tbody>
+        </table>
+          <h2 class="table-title">Image Check</h2>
+        <table cellpadding="0" cellspacing="0">
+          <thead>
+            <tr>
+                <th>Result</th>
+                <th>Alt tag</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr >
+                <td><a href=https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_campus_logo_2x.png target="_blank"><img src=https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_campus_logo_2x.png style="max-width: 250px"></a><br><br>https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_campus_logo_2x.png</td>
+                <td>[Apple Authorized Campus Store]</td>
+              </tr>
+              <tr >
+                <td><a href=https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/m_bts_aacs_header_2x.png target="_blank"><img src=https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/m_bts_aacs_header_2x.png style="max-width: 250px"></a><br><br>https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/m_bts_aacs_header_2x.png</td>
+                <td>[Buy a Mac or iPad for college. Get AirPods.]</td>
+              </tr>
+              <tr >
+                <td><a href=https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_button_2x.png target="_blank"><img src=https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_button_2x.png style="max-width: 250px"></a><br><br>https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_button_2x.png</td>
+                <td>[Shop]</td>
+              </tr>
+              <tr >
+                <td><a href=https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_rounded_corner_top_2x.jpg target="_blank"><img src=https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_rounded_corner_top_2x.jpg style="max-width: 250px"></a><br><br>https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_rounded_corner_top_2x.jpg</td>
+                <td>[Empty Alt tag]</td>
+              </tr>
+              <tr >
+                <td><a href=https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_campus_logo_2x.png target="_blank"><img src=https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_campus_logo_2x.png style="max-width: 250px"></a><br><br>https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_campus_logo_2x.png</td>
+                <td>[Apple Authorized Campus Store]</td>
+              </tr>
+              <tr >
+                <td><a href=https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_header_2x.png target="_blank"><img src=https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_header_2x.png style="max-width: 250px"></a><br><br>https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_header_2x.png</td>
+                <td>[Buy a Mac or iPad for college. Get AirPods.]</td>
+              </tr>
+              <tr >
+                <td><a href=https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_button_2x.png target="_blank"><img src=https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_button_2x.png style="max-width: 250px"></a><br><br>https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_button_2x.png</td>
+                <td>[Shop]</td>
+              </tr>
+              <tr >
+                <td><a href=https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_hero_2x.jpg target="_blank"><img src=https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_hero_2x.jpg style="max-width: 250px"></a><br><br>https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_hero_2x.jpg</td>
+                <td>[Empty Alt tag]</td>
+              </tr>
+              <tr >
+                <td><a href=https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_rounded_corner_bottom_2x.jpg target="_blank"><img src=https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_rounded_corner_bottom_2x.jpg style="max-width: 250px"></a><br><br>https://images.apple.com/dm/us/20/80B0EDC3-ADA4-4659-B97B-DF65D7342A14/i/bts_aacs_rounded_corner_bottom_2x.jpg</td>
+                <td>[Empty Alt tag]</td>
+              </tr>
+          </tbody>
+        </table>
+          <h2 class="table-title">Live Images Check</h2>
+        <table cellpadding="0" cellspacing="0">
+          <thead>
+            <tr>
+                <th>Image</th>
+                <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr >
+                <td>All the images on this Email are Live !</td>
+                <td>Pass</td>
+              </tr>
+          </tbody>
+        </table>
+          <h2 class="table-title">Src Attributes Check</h2>
+        <table cellpadding="0" cellspacing="0">
+          <thead>
+            <tr>
+                <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr >
+                <td>All the src attributes are present in the &ltimg&gt tag!</td>
+              </tr>
+          </tbody>
+        </table>
+          <h2 class="table-title">Tracking Code Check</h2>
+        <table cellpadding="0" cellspacing="0">
+          <thead>
+            <tr>
+                <th>Result</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr >
+                <td>Tracking Code check passed --- Tracking Code not null ( CDM-US-DM-${listfile.copCampaignId}-${listfile.copListId} )</td>
+              </tr>
+          </tbody>
+        </table>
+          <h2 class="table-title">Web Open Check</h2>
+        <table cellpadding="0" cellspacing="0">
+          <thead>
+            <tr>
+                <th>Result</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr >
+                <td>${global.trackWebOpen} check passed</td>
+              </tr>
+          </tbody>
+        </table>
+          <h2 class="table-title">Subject Check</h2>
+        <table cellpadding="0" cellspacing="0">
+          <thead>
+            <tr>
+                <th>Result</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr >
+                <td>Subject check passed --- No spacing issues detected</td>
+              </tr>
+          </tbody>
+        </table>
+          <h2 class="table-title">HTML Link Check</h2>
+        <table cellpadding="0" cellspacing="0">
+          <thead>
+            <tr>
+                <th>Result</th>
+                <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr  class="warning" >
+                <td>BNAV_LEGAL</td>
+                <td class="warning">'Desktop' link found in 'mobile' block.  Please check.</td>
+              </tr>
+          </tbody>
+        </table>
+          <h2 class="table-title">Link Check</h2>
+        <table cellpadding="0" cellspacing="0">
+          <thead>
+            <tr>
+                <th>Url</th>
+                <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr >
+                <td><a href=https://www.apple.com/promo target="_blank"> https://www.apple.com/promo </a></td>
+                <td>Pass</td>
+              </tr>
+              <tr >
+                <td><a href=https://www.apple.com/us-hed/shop/back-to-school target="_blank"> https://www.apple.com/us-hed/shop/back-to-school </a></td>
+                <td>Pass</td>
+              </tr>
+          </tbody>
+        </table>
+          <h2 class="table-title">Mobile Link Check</h2>
+        <table cellpadding="0" cellspacing="0">
+          <thead>
+            <tr>
+                <th>Result</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr  class="warning" >
+                <td class="warning">No mobile links found.  Please check.</td>
+              </tr>
+          </tbody>
+        </table>
+          <h2 class="table-title">Smart Link Check</h2>
+        <table cellpadding="0" cellspacing="0">
+          <thead>
+            <tr>
+                <th>Result</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr  class="warning" >
+                <td class="warning">No Smart links found.  Please check</td>
+              </tr>
+          </tbody>
+        </table>
+
+      <p class="fine-print"></p>
+    </section>
+    <script>
+      (function () {
+        var HIDDEN = "hidden";
+        var showAllState = "true" === "true" ? true : false
+        var createTable = create(Table);
+        var createRow = create(Row);
+        var createHeader = create(Header);
+        var createCell = create(Cell);
+
+        function applyToEach(method /* args... */) {
+          var args = Array.prototype.slice.call(arguments, 1);
+
+          return function (context) {
+            return context[method].apply(context, args);
+          };
+        }
+
+        function makeArray(arraylike) {
+          return Array.prototype.slice.call(arraylike);
+        }
+
+        function negate(func) {
+          return function () {
+            return !func.apply(null, arguments);
+          };
+        }
+
+        function create(constructor) {
+          return function (el) {
+            return new constructor(el);
+          };
+        }
+
+        function hasAnyClass(el, classes) {
+          if (classes.length === 0) {
+            return true;
+          }
+
+          for (var i = 0; i < classes.length; i++) {
+            if (el.classList.contains(classes[i])) {
+              return true;
+            }
+          }
+
+          return false;
+        }
+
+        function Table(el) {
+          this.el = el;
+          this.criteria = { text: null, states: [] };
+          this.headers = makeArray(el.querySelectorAll("th")).map(createHeader);
+          this.body = el.querySelector("tbody");
+          this.rows = makeArray(this.body.querySelectorAll("tr")).map(createRow);
+          this.sorting = null;
+
+          this.unsort();
+
+          this.headers.forEach(function (header, index) {
+            header.el.addEventListener("click", this.toggleSort.bind(this, index));
+          }, this);
+        }
+
+        Table.prototype.showAll = function () {
+          this.criteria.states = [];
+          this.filter();
+        };
+
+        Table.prototype.onlyShowFailures = function () {
+          this.criteria.states = ["failure", "warning"];
+          this.filter();
+        };
+
+        Table.prototype.setTextCriteria = function (text) {
+          this.criteria.text = text.trim().toLowerCase();
+          this.filter();
+        };
+
+        Table.prototype.filter = function () {
+          var stateCriteria = this.criteria.states;
+          var textCriteria = this.criteria.text;
+
+          this.rows.forEach(function (row) {
+            // okie dokie artichokie
+            if (stateCriteria.length === 0 && row.contains(textCriteria)) {
+              row.show();
+            } else if (stateCriteria.length > 0 && hasAnyClass(row.el, stateCriteria)) {
+              row.show();
+            } else {
+              row.hide();
+            }
+          }, this);
+        };
+
+        Table.prototype.sortRows = function (index, a, b) {
+          if (!a.cells[index]) {
+            return -1;
+          }
+
+          if (!b.cells[index]) {
+            return 1;
+          }
+
+          return a.cells[index].text > b.cells[index].text ? 1 : -1;
+        };
+
+        Table.prototype.sortAscending = function (index) {
+          this.unsort();
+          this.sorting[index] = 1;
+          this.headers[index].sortAscending();
+          this.rows.sort(this.sortRows.bind(this, index));
+          this.updateRows();
+        };
+
+        Table.prototype.sortDescending = function (index) {
+          this.unsort();
+          this.sorting[index] = -1;
+          this.headers[index].sortDescending();
+          this.rows.reverse();
+          this.rows.sort(this.sortRows.bind(this, index));
+          this.rows.reverse();
+          this.updateRows();
+        };
+
+        Table.prototype.toggleSort = function (index) {
+          if (this.sorting[index] < 1) {
+            this.sortAscending(index);
+          } else {
+            this.sortDescending(index);
+          }
+        };
+
+        Table.prototype.unsort = function () {
+          this.headers.forEach(applyToEach("unsort"));
+          this.sorting = this.headers.map(function () { return 0; });
+        };
+
+        Table.prototype.updateRows = function () {
+          this.rows.forEach(function (row) {
+            row.el.remove();
+          });
+
+          this.rows.forEach(function (row, index) {
+            this.body.appendChild(row.el);
+          }, this);
+        };
+
+        function Row(el) {
+          this.el = el;
+          this.cells = makeArray(el.querySelectorAll("td")).map(createCell);
+        }
+
+        Row.prototype.contains = function (str) {
+          return this.cells.some(applyToEach("contains", str));
+        };
+
+        Row.prototype.hide = function () {
+          this.el.classList.add(HIDDEN);
+        };
+
+        Row.prototype.show = function () {
+          this.el.classList.remove(HIDDEN);
+        };
+
+        function Header(el) {
+          this.el = el;
+        }
+
+        Header.prototype.sortAscending = function () {
+          this.el.classList.add("ascending");
+          this.el.classList.remove("descending");
+        }
+
+        Header.prototype.sortDescending = function () {
+          this.el.classList.add("descending");
+          this.el.classList.remove("ascending");
+        }
+
+        Header.prototype.unsort = function () {
+          this.el.classList.remove("ascending", "descending");
+        };
+
+        function Cell(el) {
+          this.el = el;
+          this.text = this.el.innerText.toLowerCase();
+        }
+
+        Cell.prototype.contains = function (str) {
+          return this.text.indexOf(str) !== -1;
+        }
+
+        // let's go
+        var terminalOutput = document.querySelector(".terminal-output");
+        var stateCriteria = makeArray(document.querySelectorAll(".criteria-state input"));
+        var textCriteria = document.querySelector(".criteria-text");
+        var tables = makeArray(document.querySelectorAll("table")).map(createTable);
+
+        var handleTextCriteriaUpdate = function (event) {
+          tables.forEach(applyToEach("setTextCriteria", textCriteria.value));
+        };
+
+        textCriteria.addEventListener("click", handleTextCriteriaUpdate);
+        textCriteria.addEventListener("keyup", handleTextCriteriaUpdate);
+
+        stateCriteria.forEach(function (radio) {
+          radio.addEventListener("change", function (event) {
+            textCriteria.value = "";
+            handleTextCriteriaUpdate();
+            var state = radio.value;
+            var isChecked = radio.checked;
+            var method = state === "all" ? "showAll" : "onlyShowFailures";
+
+            tables.forEach(applyToEach(method));
+          });
+        });
+
+        if (terminalOutput) {
+          terminalOutput.querySelector(".terminal-output-toggler").addEventListener("click", function (event) {
+            event.preventDefault();
+            terminalOutput.classList.toggle("active");
+          });
+        }
+
+        if (!showAllState) {
+          document.querySelectorAll("input[value=failure]")[0].checked = true;
+          tables.forEach(applyToEach("onlyShowFailures", "failure"));
+        } else {
+          document.querySelectorAll("input[value=all]")[0].checked = true;
+        }
+      })();
+    </script>
+  </body>
+</html>
